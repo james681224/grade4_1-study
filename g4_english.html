@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小四上英語（康軒版 Wonder World 4）- 段考衝刺網</title>
+<style>
+  :root { --primary: #FB8C00; --secondary: #039BE5; --bg: #FFF8E1; --text: #333; }
+  body { font-family: -apple-system, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+  .container { max-width: 960px; margin: 0 auto; background: white; padding: 22px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 18px; }
+  .home-btn { background: #546E7A; color: white; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+  h1 { color: var(--primary); margin: 0; font-size: 24px; }
+  .scope-box { background: #FFF3E0; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #FFCC80; }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .q-btn { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 16px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .q-btn:hover { background: var(--primary); color: white; }
+  .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .lesson-chk { display: flex; align-items: center; gap: 8px; background: white; padding: 8px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 1px solid #FFE0B2; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .tab-btn { padding: 12px 24px; font-size: 16px; border: none; border-radius: 10px; background: #e0e0e0; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .note-card { border: 2px solid #FFE0B2; border-radius: 12px; padding: 18px; margin-bottom: 16px; background: #FFFDF7; }
+  .note-title { font-size: 19px; font-weight: bold; color: #E65100; margin-bottom: 10px; }
+  .vocab-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .vocab-btn { background: #E1F5FE; border: 1px solid #81D4FA; color: #0277BD; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: bold; }
+  .vocab-btn:hover { background: #0288D1; color: white; }
+  .grammar-list { margin: 8px 0 0; padding-left: 20px; line-height: 1.7; font-size: 15px; }
+  .sentence-box { background: #F1F8E9; padding: 10px 14px; border-radius: 8px; margin-top: 10px; font-size: 15px; }
+  .speak-mini { background: var(--secondary); color: white; border: none; padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 13px; margin-left: 6px; }
+  .quiz-box { background: #FFFDE7; border: 3px solid #FBC02D; border-radius: 16px; padding: 25px 20px; max-width: 700px; margin: 0 auto; text-align: center; }
+  .score-bar { font-size: 17px; font-weight: bold; color: #F57F17; margin-bottom: 15px; }
+  .q-tag { display: inline-block; background: #FFE0B2; color: #E65100; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .q-text { font-size: 20px; font-weight: bold; margin: 15px 0 20px; line-height: 1.5; text-align: left; }
+  .opts { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .opt-btn { padding: 14px 18px; font-size: 16px; text-align: left; border: 2px solid #ccc; background: white; border-radius: 10px; cursor: pointer; font-weight: 500; }
+  .opt-btn:hover { border-color: var(--primary); background: #FFF3E0; }
+  .opt-btn.correct { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; font-weight: bold; }
+  .opt-btn.wrong { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .exp-box { display: none; margin-top: 18px; padding: 15px; background: #E3F2FD; border-left: 5px solid #1976D2; border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.6; }
+  .next-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 17px; border-radius: 25px; cursor: pointer; margin-top: 18px; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <a href="index.html" class="home-btn">🏠 回全科總大廳</a>
+    <h1>🔤 小四上英語（康軒 Wonder World 4）</h1>
+    <span style="font-size:14px; color:#666;">點擊單字可聽美式發音</span>
+  </div>
+
+  <div class="scope-box">
+    <div style="font-weight:bold; margin-bottom:8px;">📌 勾選本次段考範圍：</div>
+    <div class="quick-btns">
+      <button class="q-btn" onclick="selectPreset([1,2])">期中考範圍 (Unit 1~2)</button>
+      <button class="q-btn" onclick="selectPreset([3,4,5])">期末考範圍 (Unit 3~4 + 節慶)</button>
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5])">全選總複習</button>
+    </div>
+    <div class="lessons-grid" id="checkbox-area"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">📖 單字發音與句型重點</button>
+    <button class="tab-btn" onclick="switchTab(2)">✍️ 範圍無限測驗＋解析</button>
+  </div>
+
+  <div id="tab1" class="section active"><div id="notes-area"></div></div>
+  <div id="tab2" class="section">
+    <div class="quiz-box">
+      <div class="score-bar">🏆 累計得分：<span id="score">0</span> 分 ｜ 🔥 連續答對：<span id="streak">0</span> 題</div>
+      <div class="q-tag" id="q-lesson-tag">單元標籤</div>
+      <div class="q-text" id="q-text">題目載入中...</div>
+      <div class="opts" id="q-opts"></div>
+      <div class="exp-box" id="q-exp"></div>
+      <button class="next-btn" id="next-btn" onclick="loadQuestion()">下一題 ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const units = [
+  {
+    id: 1,
+    name: 'Unit 1: A Dollhouse for Jello（房間與居家環境）',
+    vocab: [
+      { en: 'bedroom', zh: '臥室' }, { en: 'living room', zh: '客廳' }, { en: 'bathroom', zh: '浴室' },
+      { en: 'kitchen', zh: '廚房' }, { en: 'dining room', zh: '飯廳' }, { en: 'in', zh: '在…裡面' },
+      { en: 'on', zh: '在…上面' }, { en: 'under', zh: '在…下面' }, { en: 'by', zh: '在…旁邊' }
+    ],
+    grammar: [
+      '詢問地點句型：Where is + 單數人/物?（Where is Mom? 媽媽在哪裡？）',
+      '回答地點句型：He / She / It is + 介系詞 + the 房間.（She is in the kitchen. 她在廚房裡。）',
+      '地方介系詞口訣：在房間「裡面」一律用 in（in the bedroom / in the living room）。'
+    ],
+    sentences: [
+      { en: 'Where is Jello? He is in the living room.', zh: 'Jello 在哪裡？他在客廳裡。' },
+      { en: 'The ball is under the chair.', zh: '球在椅子下面。' }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Unit 2: A Video Call from Boka（現在進行式與日常活動）',
+    vocab: [
+      { en: 'reading', zh: '正在閱讀' }, { en: 'writing', zh: '正在寫字' }, { en: 'cooking', zh: '正在煮飯' },
+      { en: 'sleeping', zh: '正在睡覺' }, { en: 'watching TV', zh: '正在看電視' }, { en: 'drawing', zh: '正在畫畫' },
+      { en: 'singing', zh: '正在唱歌' }, { en: 'dancing', zh: '正在跳舞' }
+    ],
+    grammar: [
+      '現在進行式公式：be動詞 (am / is / are) + 動詞-ing，表示「正在做某事」。',
+      '問句：What are you doing?（你正在做什麼？）➔ 回答：I am reading.（我正在看書。）',
+      '動詞加 ing 變化陷阱：字尾有不發音 e 要「去 e 再加 ing」，例如 write ➔ writing、dance ➔ dancing。'
+    ],
+    sentences: [
+      { en: 'What are you doing? I am cooking.', zh: '你正在做什麼？我正在煮飯。' },
+      { en: 'She is writing in her bedroom.', zh: '她正在她的臥室裡寫字。' }
+    ]
+  },
+  {
+    id: 3,
+    name: "Unit 3: Let's Have Lunch!（點餐與食物飲料）",
+    vocab: [
+      { en: 'rice', zh: '米飯' }, { en: 'noodles', zh: '麵條' }, { en: 'hamburger', zh: '漢堡' },
+      { en: 'sandwich', zh: '三明治' }, { en: 'soup', zh: '湯' }, { en: 'juice', zh: '果汁' },
+      { en: 'milk', zh: '牛奶' }, { en: 'water', zh: '水' }, { en: 'tea', zh: '茶' }
+    ],
+    grammar: [
+      '詢問想吃什麼：What would you like?（你想要點什麼？）➔ 回答：I would like some juice.（我想要一些果汁。）',
+      '不可數名詞陷阱：液體（juice, milk, water, soup, tea）與 rice 不可數，後面「不能加 s」，前面「不能加 a」。',
+      '可數食物要加 s：noodles（麵條通常用複數）、hamburgers、sandwiches。'
+    ],
+    sentences: [
+      { en: 'What would you like? I would like a hamburger and some milk.', zh: '你想要什麼？我想要一個漢堡和一些牛奶。' },
+      { en: "Let's have lunch together!", zh: '我們一起吃午餐吧！' }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Unit 4: At the Zoo（動物園與動物單複數）',
+    vocab: [
+      { en: 'lion', zh: '獅子' }, { en: 'tiger', zh: '老虎' }, { en: 'elephant', zh: '大象' },
+      { en: 'monkey', zh: '猴子' }, { en: 'zebra', zh: '斑馬' }, { en: 'bear', zh: '熊' },
+      { en: 'hippo', zh: '河馬' }, { en: 'kangaroo', zh: '袋鼠' }
+    ],
+    grammar: [
+      'a 與 an 的區分：母音字母（a, e, i, o, u）發音開頭的單數動物要用 an，例如 an elephant（一隻大象）。',
+      '詢問動物數量與名稱：What are those?（那些是什麼？）➔ They are zebras.（牠們是斑馬。）',
+      'this（這個）/ that（那個）配 is；these（這些）/ those（那些）配 are 且動物字尾要加 s。'
+    ],
+    sentences: [
+      { en: 'Look! It is an elephant.', zh: '看！牠是一隻大象。' },
+      { en: 'What are these? They are monkeys.', zh: '這些是什麼？牠們是猴子。' }
+    ]
+  },
+  {
+    id: 5,
+    name: 'Culture and Festivals（文化與節慶單元）',
+    vocab: [
+      { en: 'Halloween', zh: '萬聖節' }, { en: 'witch', zh: '女巫' }, { en: 'ghost', zh: '鬼魂' },
+      { en: 'pumpkin', zh: '南瓜' }, { en: 'Christmas', zh: '聖誕節' }, { en: 'Santa Claus', zh: '聖誕老人' },
+      { en: 'gift', zh: '禮物' }, { en: 'stocking', zh: '聖誕襪' }
+    ],
+    grammar: [
+      '萬聖節敲門討糖果口訣：Trick or treat!（不給糖就搗蛋！）',
+      '聖誕節祝福語：Merry Christmas and Happy New Year!（聖誕快樂並祝新年快樂！）',
+      '節慶專有名詞第一個字母都要大寫（Halloween, Christmas）。'
+    ],
+    sentences: [
+      { en: 'Trick or treat! Happy Halloween!', zh: '不給糖就搗蛋！萬聖節快樂！' },
+      { en: 'Merry Christmas! Here is a gift for you.', zh: '聖誕快樂！這是給你的禮物。' }
+    ]
+  }
+];
+
+const grammarQBank = [
+  { uid: 1, q: 'A: Where is Mom?  B: She is _____ the kitchen.', opts: ['in', 'on', 'under', 'at'], ans: 0, exp: '表示在房間（kitchen, bedroom, living room）裡面，介系詞一律用 in。' },
+  { uid: 1, q: 'A: _____ is my cat?  B: It is under the bed.', opts: ['Where', 'What', 'Who', 'How'], ans: 0, exp: '答句回答「在床底下（地點）」，所以問句要用詢問地點的疑問詞 Where。' },
+  { uid: 2, q: 'A: What are you doing?  B: I am _____ a letter.', opts: ['writing', 'writeing', 'write', 'writes'], ans: 0, exp: '現在進行式 be + V-ing，write 字尾有不發音的 e，必須「去掉 e 再加 ing」變成 writing。' },
+  { uid: 2, q: 'Look! Boka and Jello _____ dancing in the living room.', opts: ['are', 'is', 'am', 'be'], ans: 0, exp: '主詞 Boka and Jello 是兩個人（複數），現在進行式的 be 動詞要搭配 are。' },
+  { uid: 3, q: 'A: What would you like?  B: I would like _____.', opts: ['some juice', 'a juice', 'two juices', 'a milk'], ans: 0, exp: 'juice（果汁）與 milk（牛奶）屬於不可數液體名詞，前面不能加 a，字尾也不能加 s，要用 some juice。' },
+  { uid: 3, q: 'A: _____ would you like?  B: I would like a hamburger and some soup.', opts: ['What', 'Where', 'Who', 'When'], ans: 0, exp: '點餐時詢問「你想要什麼？」，英文固定句型是 What would you like?。' },
+  { uid: 4, q: 'Look over there! It is _____ big elephant.', opts: ['a', 'an', 'two', 'some'], ans: 0, exp: '超級大陷阱！雖然 elephant 是 e 開頭，但前面加了形容詞 big（b 子音開頭），所以要用 a big elephant（如果是直接接 elephant 才用 an elephant）。' },
+  { uid: 4, q: 'A: What are _____?  B: They are tigers.', opts: ['those', 'that', 'this', 'it'], ans: 0, exp: '問句動詞是複數 are，答句主詞是 They，所以要搭配複數指示代名詞 those（那些）或 these（這些）。' },
+  { uid: 5, q: '萬聖節小朋友挨家挨戶敲門要糖果時，會大喊哪一句英文？', opts: ['Trick or treat!', 'Merry Christmas!', 'Happy Birthday!', 'Good luck!'], ans: 0, exp: 'Trick or treat! 意思是「不給糖就搗蛋！」，是萬聖節最經典的用語。' },
+  { uid: 5, q: '聖誕節收到朋友送的禮物時，最適合說哪一句祝福語？', opts: ['Merry Christmas!', 'Happy Halloween!', 'Happy Moon Festival!', 'See you later!'], ans: 0, exp: '聖誕節的祝福語是 Merry Christmas!（聖誕快樂！）。' }
+];
+
+let score = 0, streak = 0, currQ = null, answered = false;
+
+function speak(text) {
+  window.speechSynthesis.cancel();
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = 'en-US';
+  msg.rate = 0.9;
+  window.speechSynthesis.speak(msg);
+}
+
+function init() {
+  const area = document.getElementById('checkbox-area');
+  units.forEach(u => {
+    area.innerHTML += `<label class="lesson-chk"><input type="checkbox" class="u-chk" value="${u.id}" checked onchange="updateView()"> ${u.name.split('（')[0]}</label>`;
+  });
+  updateView();
+}
+
+function selectPreset(ids) {
+  document.querySelectorAll('.u-chk').forEach(c => c.checked = ids.includes(parseInt(c.value)));
+  updateView();
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.u-chk:checked')).map(c => parseInt(c.value));
+}
+
+function updateView() {
+  const ids = getSelectedIds();
+  const nArea = document.getElementById('notes-area');
+  nArea.innerHTML = '';
+  if (ids.length === 0) {
+    nArea.innerHTML = '<p style="text-align:center;color:#888;">請至少勾選一個單元！</p>';
+    return;
+  }
+  units.filter(u => ids.includes(u.id)).forEach(u => {
+    const vocabHtml = u.vocab.map(v => `<button class="vocab-btn" onclick="speak('${v.en.replace(/'/g, "\'")}')">🔊 ${v.en} (${v.zh})</button>`).join('');
+    const gramHtml = u.grammar.map(g => `<li>${g}</li>`).join('');
+    const sentHtml = u.sentences.map(s => `<div>🗣️ <b>${s.en}</b> <button class="speak-mini" onclick="speak('${s.en.replace(/'/g, "\'")}')">聽句子</button><br><span style="color:#555;font-size:14px;">${s.zh}</span></div>`).join('<hr style="border:0;border-top:1px dashed #ccc;margin:6px 0;">');
+    nArea.innerHTML += `<div class="note-card">
+      <div class="note-title">${u.name}</div>
+      <div style="font-size:14px;font-weight:bold;color:#0277BD;">📌 核心單字（點擊聽發音）：</div>
+      <div class="vocab-list">${vocabHtml}</div>
+      <div style="font-size:14px;font-weight:bold;color:#E65100;margin-top:8px;">💡 必考句型與文法陷阱：</div>
+      <ul class="grammar-list">${gramHtml}</ul>
+      <div class="sentence-box">${sentHtml}</div>
+    </div>`;
+  });
+  if (document.getElementById('tab2').classList.contains('active')) loadQuestion();
+}
+
+function switchTab(num) {
+  document.querySelectorAll('.section').forEach((s, i) => s.classList.toggle('active', i + 1 === num));
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === num));
+  if (num === 2) loadQuestion();
+}
+
+function buildDynamicVocabQuestion(selectedUnits) {
+  const allVocab = [];
+  selectedUnits.forEach(u => u.vocab.forEach(v => allVocab.push({ ...v, uid: u.id, uname: u.name.split('（')[0] })));
+  const target = allVocab[Math.floor(Math.random() * allVocab.length)];
+  const others = allVocab.filter(v => v.en !== target.en).sort(() => Math.random() - 0.5).slice(0, 3);
+  const opts = [target.zh, ...others.map(o => o.zh)];
+  return {
+    uid: target.uid,
+    tag: `${target.uname}｜單字發音測驗`,
+    q: `請問英文單字「 ${target.en} 」的中文意思是什麼？ <button class="speak-mini" onclick="speak('${target.en.replace(/'/g, "\'")}')">🔊 聽發音</button>`,
+    opts: opts,
+    ans: 0,
+    exp: `單字「${target.en}」的意思是「${target.zh}」，可以多按幾次上面的喇叭跟著唸喔！`,
+    autoSpeak: target.en
+  };
+}
+
+function loadQuestion() {
+  const ids = getSelectedIds();
+  const selUnits = units.filter(u => ids.includes(u.id));
+  if (selUnits.length === 0) {
+    document.getElementById('q-text').innerText = '請先在上方勾選至少一個單元！';
+    document.getElementById('q-opts').innerHTML = '';
+    return;
+  }
+  answered = false;
+  document.getElementById('q-exp').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+
+  const gPool = grammarQBank.filter(q => ids.includes(q.uid));
+  let nextQ;
+  if (Math.random() < 0.5 && gPool.length > 0) {
+    const raw = gPool[Math.floor(Math.random() * gPool.length)];
+    const uObj = units.find(u => u.id === raw.uid);
+    nextQ = { ...raw, tag: `${uObj.name.split('（')[0]}｜句型文法測驗` };
+  } else {
+    nextQ = buildDynamicVocabQuestion(selUnits);
+  }
+  currQ = nextQ;
+
+  document.getElementById('q-lesson-tag').innerText = currQ.tag;
+  document.getElementById('q-text').innerHTML = currQ.q;
+  if (currQ.autoSpeak) speak(currQ.autoSpeak);
+
+  const indices = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+  const oDiv = document.getElementById('q-opts');
+  oDiv.innerHTML = '';
+  indices.forEach((idx, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerText = `${['A', 'B', 'C', 'D'][pos]}. ${currQ.opts[idx]}`;
+    btn.onclick = () => checkAns(btn, idx);
+    oDiv.appendChild(btn);
+  });
+}
+
+function checkAns(btn, idx) {
+  if (answered) return;
+  answered = true;
+  if (idx === currQ.ans) {
+    btn.classList.add('correct'); score += 10; streak++;
+  } else {
+    btn.classList.add('wrong'); streak = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (b.innerText.includes(currQ.opts[currQ.ans])) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').innerText = score;
+  document.getElementById('streak').innerText = streak;
+  const exp = document.getElementById('q-exp');
+  exp.innerHTML = `<b>💡 小老師解析：</b>${currQ.exp}`;
+  exp.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+init();
+</script>
+</body>
+</html>

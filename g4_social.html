@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小四上社會（康軒版）- 段考衝刺網</title>
+<style>
+  :root { --primary: #2E7D32; --accent: #FF8F00; --bg: #F4F7F6; --text: #333; }
+  body { font-family: -apple-system, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+  .container { max-width: 960px; margin: 0 auto; background: white; padding: 22px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 18px; }
+  .home-btn { background: #546E7A; color: white; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+  h1 { color: var(--primary); margin: 0; font-size: 24px; }
+  .scope-box { background: #E8F5E9; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #A5D6A7; }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .q-btn { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 16px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .q-btn:hover { background: var(--primary); color: white; }
+  .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+  .lesson-chk { display: flex; align-items: center; gap: 6px; background: white; padding: 8px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 1px solid #C8E6C9; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .tab-btn { padding: 12px 24px; font-size: 16px; border: none; border-radius: 10px; background: #e0e0e0; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .note-card { border: 2px solid #e0e0e0; border-radius: 12px; padding: 18px; margin-bottom: 14px; background: #fafafa; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; color: white; font-weight: bold; margin-right: 8px; background: var(--primary); }
+  .note-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #1B5E20; }
+  .note-list { margin: 0; padding-left: 20px; line-height: 1.8; font-size: 15px; }
+  .quiz-box { background: #FFFDE7; border: 3px solid #FBC02D; border-radius: 16px; padding: 25px 20px; max-width: 700px; margin: 0 auto; text-align: center; }
+  .score-bar { font-size: 17px; font-weight: bold; color: #F57F17; margin-bottom: 15px; }
+  .q-tag { display: inline-block; background: #E8F5E9; color: #2E7D32; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .q-text { font-size: 20px; font-weight: bold; margin: 15px 0 20px; line-height: 1.5; text-align: left; }
+  .opts { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .opt-btn { padding: 14px 18px; font-size: 16px; text-align: left; border: 2px solid #ccc; background: white; border-radius: 10px; cursor: pointer; font-weight: 500; }
+  .opt-btn:hover { border-color: var(--primary); background: #F1F8E9; }
+  .opt-btn.correct { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; font-weight: bold; }
+  .opt-btn.wrong { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .exp-box { display: none; margin-top: 18px; padding: 15px; background: #E3F2FD; border-left: 5px solid #1976D2; border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.6; }
+  .next-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 17px; border-radius: 25px; cursor: pointer; margin-top: 18px; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <a href="index.html" class="home-btn">🏠 回全科總大廳</a>
+    <h1>🏡 小四上社會（康軒版）</h1>
+    <span style="font-size:14px; color:#666;">家鄉的自然環境與生活</span>
+  </div>
+
+  <div class="scope-box">
+    <div style="font-weight:bold; margin-bottom:8px;">📌 勾選本次考試範圍（自動篩選重點與題庫）：</div>
+    <div class="quick-btns">
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5])">期中考範圍 (第1~2單元)</button>
+      <button class="q-btn" onclick="selectPreset([6,7,8])">期末考範圍 (第3~4單元)</button>
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6,7,8])">全選總複習</button>
+    </div>
+    <div class="lessons-grid" id="checkbox-area"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">📖 考前重點速覽</button>
+    <button class="tab-btn" onclick="switchTab(2)">✍️ 範圍無限測驗＋解析</button>
+  </div>
+
+  <div id="tab1" class="section active"><div id="notes-area"></div></div>
+  <div id="tab2" class="section">
+    <div class="quiz-box">
+      <div class="score-bar">🏆 累計得分：<span id="score">0</span> 分 ｜ 🔥 連續答對：<span id="streak">0</span> 題</div>
+      <div class="q-tag" id="q-lesson-tag">單元標籤</div>
+      <div class="q-text" id="q-text">題目載入中...</div>
+      <div class="opts" id="q-opts"></div>
+      <div class="exp-box" id="q-exp"></div>
+      <button class="next-btn" id="next-btn" onclick="loadQuestion()">下一題 ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const lessons = [
+  { id:1, unit:'第一單元', name:'1-1 家鄉在哪裡', notes:['家鄉是我們出生、成長或長期居住的地方，每個人的家鄉範圍與特色都不相同。','地圖四要素：圖名（告訴我們地圖主題）、方向標（通常上方為北方）、圖例（代表各種設施的小符號）、比例尺（表示實際距離與地圖縮小的比例）。','認識家鄉位置的方法：可以透過行政區地圖、電子地圖、空拍圖或詢問長輩來了解鄰近縣市與交通路線。'] },
+  { id:2, unit:'第一單元', name:'1-2 家鄉的地形', notes:['五大基本地形：山地（高聳陡峭）、丘陵（起伏較和緩的小山）、台地（頂部平坦、四周較陡，如桃園台地）、盆地（四周高、中間低平，如臺中盆地、臺北盆地）、平原（地勢低平廣闊，如嘉南平原）。','地形影響生活：平原與盆地交通方便、人口密集，適合種植稻米與發展工商業；山地與丘陵較適合種植茶樹、果樹或發展森林觀光。'] },
+  { id:3, unit:'第一單元', name:'1-3 氣候、水資源與生活', notes:['臺灣氣候特色：夏季吹西南季風（高溫多雨）、冬季吹東北季風（北部與東北部濕冷多雨，西南部較乾燥）。','風向對生活的影響：新竹冬季風大乾燥適合曬米粉與柿餅；沿海地區風力強可設置風力發電機；居民會在農田旁種植「防風林」保護農作物。','水資源與建設：早期先民開鑿水圳（如八堡圳、瑠公圳）引水灌溉農田；現代則興建水庫儲存雨水，我們平時要節約用水並愛護河川。'] },
+  { id:4, unit:'第二單元', name:'2-1 傳統住屋與生活', notes:['傳統住屋會就地取材並配合氣候環境：例如用竹子編牆塗泥土的「土埆厝」、用紅磚瓦蓋成的「三合院」（正身住長輩、護龍住晚輩，前面稻埕可曬穀）。','特殊環境住屋：澎湖風大且多珊瑚礁，居民用硓𥑮石砌成「菜宅」擋風並蓋屋；蘭嶼達悟族為防颱風與強風，建造半地下式的「地下屋」；原住民族群依地取材建造石板屋（魯凱、排灣）或干欄式建築。','現代居住變遷：隨著人口增加與土地有限，現代都市多改建為鋼筋水泥的公寓與高樓大廈，節省空間且更堅固。'] },
+  { id:5, unit:'第二單元', name:'2-2 器物與生活', notes:['早期生活器物多取材自大自然（竹、木、陶、石）：例如竹籃、木桶、石磨、陶甕、蓑衣（防雨用）、大灶（燒柴煮飯）。','愛物惜物精神：早期物資缺乏，器物壞了會請師傅修補（如補鍋、補傘），展現珍惜資源的智慧。','現代器物演變：隨著科技進步，電鍋取代大灶、洗衣機取代洗衣板、塑膠與不鏽鋼取代竹木器物，生活更省力便利，但也帶來塑膠垃圾問題，需落實環保減塑。'] },
+  { id:6, unit:'第三單元', name:'3-1 信仰與生活', notes:['家鄉常見的民間信仰神明：媽祖（保佑航海與平安）、土地公（保佑農作豐收與地方安寧）、保生大帝（醫藥之神）、文昌帝君（保佑學業與考試）。','多元宗教建築：除了傳統寺廟，家鄉還有基督教教堂、天主教教堂、伊斯蘭教清真寺等，我們應尊重不同宗教信仰。','廟宇的功能：早期廟宇不只是祭拜場所，也是居民聚會討論事情、舉辦廟會活動與聯絡感情的社區中心。'] },
+  { id:7, unit:'第三單元', name:'3-2 老街與生活', notes:['老街的形成原因：早期多位於水運港口（如鹿港、大溪、三峽）或交通要道、廟宇附近，因商人聚集買賣而熱鬧起來。','老街建築特色：常見「街屋」形式（門面窄、屋身深長，前面做生意、後面住家人），以及遮陽避雨的「亭仔腳」（騎樓）與巴洛克式華麗牌樓。','老街的新生與保存：隨著陸運發達與都市轉移，部分老街曾一度沒落；近年透過社區營造與文化保存，轉型為結合在地美食、手工藝與古蹟觀光的文化景點。'] },
+  { id:8, unit:'第四單元', name:'4-1 家鄉的作息、節慶與节日', notes:['傳統農民曆與二十四節氣：先民觀察太陽運行與氣候變化訂出「二十四節氣」（如清明插秧、芒種收割、冬至進補），作為農耕與生活作息的依據。','重要傳統節慶：春節（除夕圍爐、拜年）、元宵節（賞花燈、猜燈謎）、端午節（划龍舟、吃粽子、掛艾草）、中秋節（賞月、吃月餅、柚子）。','原住民族與新住民節慶：阿美族豐年祭、賽夏族矮靈祭、達悟族飛魚祭，以及新住民帶來的潑水節（東南亞）等，展現家鄉多元文化的豐富活力。'] }
+];
+
+const qBank = [
+  { lid:1, q:'在地圖上，用來說明各種符號（如學校、醫院、鐵路）所代表意義的要素稱為什麼？', opts:['圖例','比例尺','方向標','等高線'], ans:0, exp:'小老師解析：地圖四要素中，「圖例」就是地圖上的小符號說明表，幫助我們看懂地圖上的設施位置。' },
+  { lid:1, q:'如果地圖上沒有畫出方向標，依照一般地圖的閱讀習慣，地圖的上方通常代表哪一個方向？', opts:['北方','南方','東方','西方'], ans:0, exp:'小老師解析：沒有特別標示方向標時，地圖一律預設「上北、下南、左西、右東」。' },
+  { lid:2, q:'「四周地勢較高，中間地勢低平，形狀像一個大臉盆」，這種地形稱為什麼？（例如臺中、臺北）', opts:['盆地','台地','平原','丘陵'], ans:0, exp:'小老師解析：四周高、中間低平的地形叫做「盆地」，臺中盆地和臺北盆地都是代表。' },
+  { lid:2, q:'家鄉如果位於地勢低平廣闊的「平原」地形，通常會發展出哪一種生活型態？', opts:['交通便利、人口密集，適合種植稻米與發展都市','地勢高聳陡峭，適合開闢高山森林遊樂區','四周陡峭、頂部平坦，適合大規模茶園','海浪拍打岩石，適合發展深海漁港'], ans:0, exp:'小老師解析：平原平坦開闊、灌溉方便，最適合種植稻米、興建道路與聚集人口。' },
+  { lid:3, q:'新竹在冬季時風勢強勁且氣候較乾燥，當地居民善用這種氣候特色發展出哪項知名特產？', opts:['風乾米粉與柿餅','高山烏龍茶','沿海養殖牡蠣','溫泉蔬菜'], ans:0, exp:'小老師解析：新竹冬季的強風（俗稱九降風）乾燥又強勁，非常適合吹乾米粉和柿餅！' },
+  { lid:3, q:'早期先民為了將河水引進農田灌溉，辛苦開鑿了許多水利設施，下列哪一個是臺灣著名的古水圳？', opts:['八堡圳','日月潭水庫','翡翠水庫','高屏溪攔河堰'], ans:0, exp:'小老師解析：彰化的八堡圳、臺北的瑠公圳、高雄的曹公圳都是清代先民開鑿的重要灌溉水圳。' },
+  { lid:4, q:'蘭嶼的達悟族人為了抵抗夏季頻繁的颱風與冬季強勁海風，傳統上會建造哪一種特殊的住屋？', opts:['半地下式的「地下屋」','高聳的紅磚三合院','用竹子與泥土糊成的土埆厝','架高的干欄式木屋'], ans:0, exp:'小老師解析：蘭嶼四面環海風勢極強，達悟族將房屋蓋在低於地面的凹穴中（地下屋），能有效躲避強風吹襲。' },
+  { lid:4, q:'在傳統「三合院」建築中，通常哪一個位置是留給家中輩分最高的長輩居住與祭祀祖先的？', opts:['正身（正廳）','左護龍','右護龍','前面的稻埕'], ans:0, exp:'小老師解析：三合院講究長幼有序，中間最尊貴的「正身」供奉神明祖先並由長輩居住，兩側「護龍」給晚輩居住。' },
+  { lid:5, q:'早期家鄉農村在沒有自來水與洗衣機的年代，居民通常會拿著衣服到河邊，搭配哪一種器物洗衣服？', opts:['木製洗衣板與槌衣棒','電子烘衣機','不鏽鋼電鍋','竹編蓑衣'], ans:0, exp:'小老師解析：早期沒有電力與洗衣機，婦女會在河邊或水圳旁使用木頭洗衣板搓洗衣物。' },
+  { lid:5, q:'現代塑膠製品雖然輕便便宜，但過度使用卻會對家鄉環境造成什麼問題？', opts:['塑膠不易腐爛，容易造成土地與海洋垃圾汙染','塑膠太重搬不動，浪費力氣','塑膠容易生鏽腐蝕','塑膠一下雨就會融化消失'], ans:0, exp:'小老師解析：塑膠在自然界中需要數百年才能分解，隨意丟棄會嚴重破壞生態，因此我們要自備環保袋與環保杯減塑。' },
+  { lid:6, q:'家鄉沿海漁民為了祈求每次出海捕魚都能平安歸來、滿載而歸，最常祭拜哪一位神明？', opts:['媽祖','文昌帝君','神農大帝','註生娘娘'], ans:0, exp:'小老師解析：媽祖是海洋與航海的守護神，臺灣沿海地區有許多歷史悠久的媽祖廟。' },
+  { lid:6, q:'早期家鄉的「廟宇」除了讓居民燒香祈福之外，還具有下列哪一項重要功能？', opts:['居民聚會討論公共事務與聯絡感情的中心','專門辦理出國護照的政府機關','大型現代化醫療手術中心','火車與高鐵的轉運車站'], ans:0, exp:'小老師解析：傳統社會中，廟埕是村莊最熱鬧的地方，大家會在廟前聊天、開會、看戲，凝聚社區感情。' },
+  { lid:7, q:'許多家鄉老街（如三峽老街、大溪老街）的房屋都有相連的「亭仔腳」（騎樓），這種設計的主要功能是什麼？', opts:['方便行人遮陽避雨並安心逛街買東西','專門用來停放大型卡車','用來種植高大的防風林','用來儲存大量雨水的水庫'], ans:0, exp:'小老師解析：臺灣多雨且夏季炎熱，商店門前相連的「亭仔腳」能讓顧客刮風下雨都能安心逛街購物。' },
+  { lid:7, q:'家鄉許多老街因為交通路線改變而一度沒落，近年來居民透過什麼方式讓老街重新恢復活力？', opts:['結合在地傳統美食、手工藝與古蹟故事發展文化觀光','把所有百年老房子全部拆除改建成工廠','禁止外地遊客進入老街參觀','把老街改成高速公路收費站'], ans:0, exp:'小老師解析：透過保存歷史建築並結合特色小吃與文化體驗，老街成功轉型為大家喜愛造訪的文化景點。' },
+  { lid:8, q:'先民觀察太陽運行與四季氣候變化，訂出了「二十四節氣」寫在農民曆上，它的主要用途是什麼？', opts:['指導農民何時播種、插秧、收割與調整生活作息','用來計算每天的電視節目時刻表','用來規定學校每週的考試科目','用來計算國際航班的票價'], ans:0, exp:'小老師解析：二十四節氣（如立春、清明、夏至、冬至）準確反映氣候與物候變化，是早期農業社會最重要的作息指南。' },
+  { lid:8, q:'「賽夏族的矮靈祭」與「阿美族的豐年祭」都是家鄉珍貴的傳統祭典，面對不同族群的文化習俗，我們應該抱持什麼態度？', opts:['尊重、欣賞並學習不同族群的文化特色','覺得跟自己不一樣很奇怪，嘲笑對方','要求他們全部改成跟我們一樣的節日','認為只有自己的節日才是最重要的'], ans:0, exp:'小老師解析：臺灣是多元族群融合的社會，尊重並欣賞原住民族、漢人與新住民的節慶文化，能讓家鄉更豐富美好！' }
+];
+
+let score = 0, streak = 0, currQ = null, answered = false;
+
+function init() {
+  const area = document.getElementById('checkbox-area');
+  lessons.forEach(l => {
+    area.innerHTML += `<label class="lesson-chk"><input type="checkbox" class="l-chk" value="${l.id}" checked onchange="updateView()"> ${l.name}</label>`;
+  });
+  updateView();
+}
+
+function selectPreset(ids) {
+  document.querySelectorAll('.l-chk').forEach(c => c.checked = ids.includes(parseInt(c.value)));
+  updateView();
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.l-chk:checked')).map(c => parseInt(c.value));
+}
+
+function updateView() {
+  const ids = getSelectedIds();
+  const nArea = document.getElementById('notes-area');
+  nArea.innerHTML = '';
+  if (ids.length === 0) {
+    nArea.innerHTML = '<p style="text-align:center;color:#888;">請至少勾選一課！</p>';
+    return;
+  }
+  lessons.filter(l => ids.includes(l.id)).forEach(l => {
+    nArea.innerHTML += `<div class="note-card"><div class="note-title"><span class="badge">${l.unit}</span>${l.name}</div>
+      <ul class="note-list">${l.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>`;
+  });
+  if (document.getElementById('tab2').classList.contains('active')) loadQuestion();
+}
+
+function switchTab(num) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i+1===num));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i+1===num));
+  if (num === 2) loadQuestion();
+}
+
+function loadQuestion() {
+  const ids = getSelectedIds();
+  const pool = qBank.filter(q => ids.includes(q.lid));
+  if (pool.length === 0) {
+    document.getElementById('q-text').innerText = '請先在上方勾選至少一課範圍！';
+    document.getElementById('q-opts').innerHTML = '';
+    return;
+  }
+  answered = false;
+  document.getElementById('q-exp').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  let next;
+  do { next = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && currQ && next.q === currQ.q);
+  currQ = next;
+  const lessonObj = lessons.find(l => l.id === currQ.lid);
+  document.getElementById('q-lesson-tag').innerText = `${lessonObj.unit}｜${lessonObj.name}`;
+  document.getElementById('q-text').innerText = currQ.q;
+
+  const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+  const oDiv = document.getElementById('q-opts');
+  oDiv.innerHTML = '';
+  indices.forEach((idx, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerText = `${['A','B','C','D'][pos]}. ${currQ.opts[idx]}`;
+    btn.onclick = () => checkAns(btn, idx);
+    oDiv.appendChild(btn);
+  });
+}
+
+function checkAns(btn, idx) {
+  if (answered) return;
+  answered = true;
+  if (idx === currQ.ans) {
+    btn.classList.add('correct'); score += 10; streak++;
+  } else {
+    btn.classList.add('wrong'); streak = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (b.innerText.includes(currQ.opts[currQ.ans])) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').innerText = score;
+  document.getElementById('streak').innerText = streak;
+  const exp = document.getElementById('q-exp');
+  exp.innerHTML = `<b>💡 ${currQ.exp}</b>`;
+  exp.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+init();
+</script>
+</body>
+</html>

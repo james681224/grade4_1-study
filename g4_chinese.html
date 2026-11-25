@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小四上國語（南一版）- 學習衝刺網</title>
+<style>
+  :root { --primary: #E53935; --secondary: #FFB300; --bg: #FFF8F6; --text: #333; }
+  body { font-family: -apple-system, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+  .container { max-width: 960px; margin: 0 auto; background: white; padding: 22px; border-radius: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #FFCDD2; padding-bottom: 12px; margin-bottom: 18px; }
+  .home-btn { background: #546E7A; color: white; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+  h1 { color: var(--primary); margin: 0; font-size: 24px; }
+  .scope-box { background: #FFEBEE; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #FFCDD2; }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .q-btn { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 16px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .q-btn:hover { background: var(--primary); color: white; }
+  .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .lesson-chk { display: flex; align-items: center; gap: 6px; background: white; padding: 8px 10px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 1px solid #FFCDD2; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .tab-btn { padding: 12px 24px; font-size: 16px; border: none; border-radius: 10px; background: #e0e0e0; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .note-card { border: 2px solid #FFCDD2; border-radius: 12px; padding: 18px; margin-bottom: 14px; background: #FFFDFD; }
+  .note-title { font-size: 18px; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
+  .note-list { margin: 0; padding-left: 20px; line-height: 1.8; font-size: 15px; }
+  .quiz-box { background: #FFFDE7; border: 3px solid #FBC02D; border-radius: 16px; padding: 25px 20px; max-width: 700px; margin: 0 auto; text-align: center; }
+  .score-bar { font-size: 17px; font-weight: bold; color: #F57F17; margin-bottom: 15px; }
+  .q-tag { display: inline-block; background: #FFEBEE; color: #C62828; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .q-text { font-size: 20px; font-weight: bold; margin: 15px 0 20px; line-height: 1.5; text-align: left; }
+  .opts { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .opt-btn { padding: 14px 18px; font-size: 16px; text-align: left; border: 2px solid #ccc; background: white; border-radius: 10px; cursor: pointer; font-weight: 500; }
+  .opt-btn:hover { border-color: var(--primary); background: #FFEBEE; }
+  .opt-btn.correct { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; font-weight: bold; }
+  .opt-btn.wrong { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .exp-box { display: none; margin-top: 18px; padding: 15px; background: #E3F2FD; border-left: 5px solid #1976D2; border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.6; }
+  .next-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 17px; border-radius: 25px; cursor: pointer; margin-top: 18px; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <a href="index.html" class="home-btn">🏠 回全科總大廳</a>
+    <h1>📖 小四上國語（南一版）</h1>
+    <span style="font-size:14px; color:#666;">期中・期末考衝刺</span>
+  </div>
+
+  <div class="scope-box">
+    <div style="font-weight:bold; margin-bottom:8px;">📌 勾選考試範圍（自動篩選重點與測驗）：</div>
+    <div class="quick-btns">
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6])">期中考範圍 (第1~6課)</button>
+      <button class="q-btn" onclick="selectPreset([7,8,9,10,11,12])">期末考範圍 (第7~12課)</button>
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6,7,8,9,10,11,12])">全冊總複習 (1~12課)</button>
+      <button class="q-btn" onclick="selectPreset([])">全部取消</button>
+    </div>
+    <div class="lessons-grid" id="checkbox-area"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">📖 課文與字詞重點</button>
+    <button class="tab-btn" onclick="switchTab(2)">✍️ 範圍自我測驗＋解析</button>
+  </div>
+
+  <div id="tab1" class="section active"><div id="notes-area"></div></div>
+  <div id="tab2" class="section">
+    <div class="quiz-box">
+      <div class="score-bar">🏆 累計得分：<span id="score">0</span> 分 ｜ 🔥 連續答對：<span id="streak">0</span> 題</div>
+      <div class="q-tag" id="q-lesson-tag">單元標籤</div>
+      <div class="q-text" id="q-text">題目載入中...</div>
+      <div class="opts" id="q-opts"></div>
+      <div class="exp-box" id="q-exp"></div>
+      <button class="next-btn" id="next-btn" onclick="loadQuestion()">下一題 ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const lessons = [
+  { id:1, name:'第1課 窗口邊的臺灣欒樹', notes:['【課文主旨】透過觀察窗邊臺灣欒樹四季的色彩變化（綠葉、黃花、紅蒴果、枯褐），體會大自然的生命力與美感。','【修辭重點】善用「視覺摹寫」與「擬人法」，將欒樹比喻成隨季節換新衣的魔術師。','【易錯字音字形】「欒」樹（ㄌㄨㄢˊ，注意上方為「亦」兩側加「糹」）；「蒴」果（ㄕㄨㄛˋ）；「璀璨」（ㄘㄨㄟˇ ㄘㄢˋ）。'] },
+  { id:2, name:'第2課 奶奶的排骨粥', notes:['【課文主旨】描寫奶奶熬煮排骨粥的細心過程與香氣，傳達祖孫之間濃厚的親情與溫暖回憶。','【寫作手法】運用「嗅覺、味覺、聽覺」多重感官摹寫，讓食物的美味與愛心躍然紙上。','【易錯字音字形】「熬」粥（ㄠˊ）；「燉」煮（ㄉㄨㄣˋ）；「瀰」漫（ㄇㄧˊ，水部）。'] },
+  { id:3, name:'第3課 充滿希望的五味屋', notes:['【課文主旨】介紹花蓮豐濱鄉「五味屋」如何成為偏鄉孩子的第二個家，讓孩子透過整理二手物資學習服務與自信。','【核心價值】「助人最樂」與「資源循環再利用」，在付出中發現自己的價值與希望。','【易錯字音字形】「偏」僻（ㄆㄧㄢ）；「捐」贈（ㄐㄩㄢ）；「煥」然一新（ㄏㄨㄢˋ，火部）。'] },
+  { id:4, name:'第4課 玉山之歌', notes:['【課文主旨】以詩歌形式讚頌臺灣最高峰玉山的壯麗景色與雲海日出，表達對鄉土山林的熱愛與敬畏。','【文體與修辭】現代詩（新詩），運用「排比」、「譬喻」與「呼告」修辭，節奏感強。','【易錯字音字形】「巍」峨（ㄨㄟˊ）；「磅礴」（ㄆㄤˊ ㄅㄛˊ）；「曙」光（ㄕㄨˋ，日部）。'] },
+  { id:5, name:'第5課 高舉臺灣之光', notes:['【課文主旨】敘述臺灣運動選手在國際賽場上克服傷痛與逆境、永不放棄，最終奪得獎牌為國爭光的勵志故事。','【寫作手法】「順敘法」結合心理描寫，展現堅持到底的運動家精神。','【易錯字音字形】「毅」力（ㄧˋ）；「巔」峰（ㄉㄧㄢ）；「喝」采（ㄏㄜˋ，注意讀音為四聲）。'] },
+  { id:6, name:'第6課 臺灣的驕傲', notes:['【課文主旨】介紹臺灣在農業改良、科技創新或文化藝術上的傑出成就，培養對家鄉的認同與自豪感。','【文體結構】說明文，採用「總說—分說—總說」結構，條理分明舉出具體事例。','【易錯字音字形】「傑」出（ㄐㄧㄝˊ）；「揚」名國際（ㄧㄤˊ）；「驕」傲（ㄐㄧㄠ，馬部，區別「嬌」）。'] },
+  { id:7, name:'第7課 到此「藝」遊', notes:['【課文主旨】帶領讀者走訪臺灣特色藝術村或博物館，體驗傳統工藝與現代藝術結合的樂趣。','【標點與修辭】題目中的引號「藝」運用「諧音雙關」（取「一遊」的諧音），點出藝術之旅的主題。','【易錯字音字形】「雕」塑（ㄉㄧㄠ）；「陶」瓷（ㄊㄠˊ）；「琳琅」滿目（ㄌㄧㄣˊ ㄌㄤˊ）。'] },
+  { id:8, name:'第8課 四季的頭髮', notes:['【課文主旨】運用豐富的想像力，將春夏秋冬四季的景物變化比喻成大自然不同造型的頭髮。','【修辭重點】整課充滿童趣的「譬喻法」（明喻、暗喻）與「擬人法」，學習從不同角度觀察世界。','【易錯字音字形】「辮」子（ㄅㄧㄢˋ，中間為言）；「瀏」海（ㄌㄧㄡˊ）；「蓬」鬆（ㄆㄥˊ）。'] },
+  { id:9, name:'第9課 阿白觀察記', notes:['【課文主旨】透過長期觀察小白鷺（或動物）的覓食與生活習性，學習科學家細心觀察與尊重生態的態度。','【寫作手法】「觀察日記／記敘文」，按時間先後記錄動物的動作細節（動態描寫）。','【易錯字音字形】「鷺」鷥（ㄌㄨˋ）；「覓」食（ㄇㄧˋ）；「敏捷」（ㄇㄧㄣˇ ㄐㄧㄝˊ）。'] },
+  { id:10, name:'第10課 老鼠嫁女兒', notes:['【課文主旨】改寫自傳統民間故事，鼠爸媽想為女兒找「世界上最強的新郎」，問遍太陽、烏雲、風、牆壁，最後發現最怕牆壁的竟是老鼠自己。','【故事寓意】「天生我材必有用」，每個人都有自己的長處與短處，不必盲目崇拜別人。','【易錯字音字形】「娶」親（ㄑㄩˇ）；「新郎」（ㄌㄤˊ，區別「朗」）；「炫」耀（ㄒㄩㄢˋ）。'] },
+  { id:11, name:'第11課 豆粥婆婆', notes:['【課文主旨】民間故事，聰明的豆粥婆婆面對大老虎的威脅毫不驚慌，團結動物與物品（栗子、大便、草蓆等）智取老虎。','【故事寓意】遇到危險時「冷靜思考、團結合作」，智慧往往比蠻力更有力量。','【易錯字音字形】「熬」煮（ㄠˊ）；「嚇」唬（ㄒㄧㄚˋ）；「團結」（ㄊㄨㄢˊ ㄐㄧㄝˊ）。'] },
+  { id:12, name:'第12課 戴斗笠的地藏', notes:['【課文主旨】日本民間故事，善良貧窮的老爺爺在風雪中把賣不出去的斗笠（與自己的頭巾）送給路邊受凍的地藏菩薩，獲得意想不到的暖心回報。','【故事寓意】「善有善報、真誠助人」，不求回報的善良最動人。','【易錯字音字形】斗「笠」（ㄌㄧˋ，竹部）；「慈」悲（ㄘˊ）；「感激」（ㄐㄧ）。'] }
+];
+
+const qBank = [
+  { lid:1, q:'〈窗口邊的臺灣欒樹〉一課中，作者主要透過什麼變化來描寫臺灣欒樹的美？', opts:['四季葉片、花朵與果實的色彩變化','樹幹的高度與年輪數量','夜晚樹葉發出的聲音','樹根深入地底的長度'], ans:0, exp:'臺灣欒樹有「四色樹」之稱，隨四季呈現綠葉、黃花、紅褐蒴果等豐富色彩變化。' },
+  { lid:1, q:'下列哪一個詞語的讀音與用字完全正確？', opts:['臺灣欒（ㄌㄨㄢˊ）樹','蒴（ㄙㄨㄛˋ）果','璀璨（ㄘㄢ）','變幻莫（ㄇㄨˋ）測'], ans:0, exp:'「欒」讀作ㄌㄨㄢˊ；「蒴」讀作ㄕㄨㄛˋ；「璀璨」的璨讀作ㄘㄢˋ；「莫」讀作ㄇㄛˋ。' },
+  { lid:2, q:'〈奶奶的排骨粥〉一課中，作者主要想表達的情感是什麼？', opts:['奶奶對孫子女無微不至的關愛與親情','學習如何開一間排骨粥餐廳','比較不同米粒的營養成分','抱怨煮粥花費太多時間'], ans:0, exp:'透過奶奶細火慢熬排骨粥的細節，傳達出濃濃的祖孫親情。' },
+  { lid:3, q:'花蓮豐濱鄉的「五味屋」主要是透過什麼方式幫助偏鄉孩子？', opts:['讓孩子整理與販售二手物資，從服務中建立自信','每天免費發放零用錢給孩子','要求孩子整天背誦成語字典','只教孩子打電腦遊戲'], ans:0, exp:'五味屋讓孩子透過勞動與服務學習待人接物，在付出中獲得成就感與希望。' },
+  { lid:4, q:'〈玉山之歌〉屬於哪一種文體？', opts:['現代詩（新詩）','說明文','書信','劇本'], ans:0, exp:'〈玉山之歌〉分行排列、節奏明快且富含情感，屬於現代詩（新詩）。' },
+  { lid:5, q:'「全場觀眾為選手的精彩表現大聲喝采」，句中「喝」字的正確讀音為何？', opts:['ㄏㄜˋ','ㄏㄜ','ㄎㄜˇ','ㄏㄞ'], ans:0, exp:'「喝采」的「喝」是指大聲叫好，讀作四聲「ㄏㄜˋ」。' },
+  { lid:6, q:'〈臺灣的驕傲〉一課主要是用哪一種文體來介紹臺灣的成就？', opts:['說明文','童話故事','遊記','日記'], ans:0, exp:'透過客觀舉例與條理說明，介紹臺灣在各領域的傑出表現，屬於說明文。' },
+  { lid:7, q:'課文題目〈到此「藝」遊〉將「一」改為「藝」，運用了哪一種修辭技巧？', opts:['雙關（諧音雙關）','誇飾','排比','設問'], ans:0, exp:'利用「藝」與「一」讀音相同，同時表達「到此一遊」與「藝術之旅」兩層意思，稱為諧音雙關。' },
+  { lid:8, q:'〈四季的頭髮〉一課中，作者把四季的景物比喻成大自然的頭髮，這主要運用了什麼修辭？', opts:['譬喻與擬人','對偶與頂真','反問與借代','排比與回文'], ans:0, exp:'把大自然當作人一樣擁有「頭髮」，並用四季景物比喻髮型，運用了擬人與譬喻法。' },
+  { lid:9, q:'在〈阿白觀察記〉中，要寫好一篇動物觀察記錄，最重要的態度是什麼？', opts:['長期耐心觀察並客觀記錄細節','憑空想像動物會說人話','隨意驚嚇動物看牠怎麼逃跑','只看別人拍的照片不親自觀察'], ans:0, exp:'觀察記需要持續且細心地觀察生物的動作與習性，才能寫出真實生動的內容。' },
+  { lid:10, q:'〈老鼠嫁女兒〉的故事最後，鼠爸媽發現世界上最強的對象竟然是誰？', opts:['老鼠自己（因為老鼠會打洞穿牆）','太陽','烏雲','大風'], ans:0, exp:'太陽怕烏雲、烏雲怕風、風怕牆壁、牆壁怕老鼠打洞，繞了一圈發現自己其實很有能力。' },
+  { lid:11, q:'〈豆粥婆婆〉的故事告訴我們，當面對比自己強大的敵人時應該怎麼辦？', opts:['保持冷靜、運用智慧並團結合作','立刻哭泣放棄抵抗','一個人衝上去跟老虎比力氣','把食物全部交出去就沒事了'], ans:0, exp:'豆粥婆婆冷靜思考並結合大家的力量智取老虎，說明「團結與智慧勝過蠻力」。' },
+  { lid:12, q:'〈戴斗笠的地藏〉中，老爺爺為什麼把最後一頂斗笠和自己的頭巾都送給地藏菩薩？', opts:['因為他心地善良，不忍心看地藏菩薩在風雪中受凍','因為他想跟地藏菩薩換取黃金','因為斗笠太重拿不動','因為他不小心把斗笠掉在路上'], ans:0, exp:'老爺爺純粹出於同理心與善良，在風雪中把自己的頭巾也綁在最後一尊地藏頭上，不求回報的善行令人感動。' }
+];
+
+let score = 0, streak = 0, currQ = null, answered = false;
+
+function init() {
+  const area = document.getElementById('checkbox-area');
+  lessons.forEach(l => {
+    area.innerHTML += `<label class="lesson-chk"><input type="checkbox" class="l-chk" value="${l.id}" ${l.id<=6?'checked':''} onchange="updateView()"> ${l.name}</label>`;
+  });
+  updateView();
+}
+
+function selectPreset(ids) {
+  document.querySelectorAll('.l-chk').forEach(c => c.checked = ids.includes(parseInt(c.value)));
+  updateView();
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.l-chk:checked')).map(c => parseInt(c.value));
+}
+
+function updateView() {
+  const ids = getSelectedIds();
+  const nArea = document.getElementById('notes-area');
+  nArea.innerHTML = '';
+  if (ids.length === 0) {
+    nArea.innerHTML = '<p style="text-align:center;color:#888;">請至少勾選一課！</p>';
+    return;
+  }
+  lessons.filter(l => ids.includes(l.id)).forEach(l => {
+    nArea.innerHTML += `<div class="note-card"><div class="note-title">${l.name}</div>
+      <ul class="note-list">${l.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>`;
+  });
+  if (document.getElementById('tab2').classList.contains('active')) loadQuestion();
+}
+
+function switchTab(num) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i+1===num));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i+1===num));
+  if (num === 2) loadQuestion();
+}
+
+function loadQuestion() {
+  const ids = getSelectedIds();
+  const pool = qBank.filter(q => ids.includes(q.lid));
+  if (pool.length === 0) {
+    document.getElementById('q-text').innerText = '請先在上方勾選考試範圍！';
+    document.getElementById('q-opts').innerHTML = '';
+    return;
+  }
+  answered = false;
+  document.getElementById('q-exp').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  let next;
+  do { next = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && currQ && next.q === currQ.q);
+  currQ = next;
+  const lessonObj = lessons.find(l => l.id === currQ.lid);
+  document.getElementById('q-lesson-tag').innerText = lessonObj.name;
+  document.getElementById('q-text').innerText = currQ.q;
+
+  const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+  const oDiv = document.getElementById('q-opts');
+  oDiv.innerHTML = '';
+  indices.forEach((idx, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerText = `${['A','B','C','D'][pos]}. ${currQ.opts[idx]}`;
+    btn.onclick = () => checkAns(btn, idx);
+    oDiv.appendChild(btn);
+  });
+}
+
+function checkAns(btn, idx) {
+  if (answered) return;
+  answered = true;
+  if (idx === currQ.ans) {
+    btn.classList.add('correct'); score += 10; streak++;
+  } else {
+    btn.classList.add('wrong'); streak = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (b.innerText.includes(currQ.opts[currQ.ans])) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').innerText = score;
+  document.getElementById('streak').innerText = streak;
+  const exp = document.getElementById('q-exp');
+  exp.innerHTML = `<b>💡 小老師解析：</b>${currQ.exp}`;
+  exp.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+init();
+</script>
+</body>
+</html>
