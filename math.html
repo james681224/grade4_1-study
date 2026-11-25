@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小四上數學（翰林版）- 期中期末衝刺網</title>
+<style>
+  :root { --primary: #1E88E5; --secondary: #FF8F00; --bg: #F0F7FF; --text: #333; }
+  body { font-family: -apple-system, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+  .container { max-width: 960px; margin: 0 auto; background: white; padding: 22px; border-radius: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #E3F2FD; padding-bottom: 12px; margin-bottom: 18px; }
+  .home-btn { background: #546E7A; color: white; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+  h1 { color: var(--primary); margin: 0; font-size: 24px; }
+  .scope-box { background: #E3F2FD; padding: 15px; border-radius: 14px; margin-bottom: 20px; border: 2px solid #90CAF9; }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .q-btn { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 18px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .q-btn:hover { background: var(--primary); color: white; }
+  .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 8px; }
+  .lesson-chk { display: flex; align-items: center; gap: 6px; background: white; padding: 8px 10px; border-radius: 10px; font-size: 14px; cursor: pointer; border: 1px solid #BBDEFB; font-weight: 500; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .tab-btn { padding: 12px 24px; font-size: 16px; border: none; border-radius: 12px; background: #e0e0e0; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .note-card { border: 2px solid #E3F2FD; border-radius: 14px; padding: 18px; margin-bottom: 14px; background: #FAFCFF; }
+  .note-title { font-size: 18px; font-weight: bold; color: #1565C0; margin-bottom: 10px; }
+  .note-list { margin: 0; padding-left: 20px; line-height: 1.8; font-size: 15px; }
+  .quiz-box { background: #FFFDE7; border: 3px solid #FBC02D; border-radius: 18px; padding: 25px 20px; max-width: 680px; margin: 0 auto; text-align: center; }
+  .score-bar { font-size: 18px; font-weight: bold; color: #F57F17; margin-bottom: 15px; }
+  .q-tag { display: inline-block; background: #E3F2FD; color: #1565C0; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .q-text { font-size: 20px; font-weight: bold; margin: 15px 0 20px; line-height: 1.6; text-align: left; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 550px) { .opts { grid-template-columns: 1fr; } }
+  .opt-btn { padding: 14px 18px; font-size: 18px; text-align: left; border: 2px solid #ccc; background: white; border-radius: 12px; cursor: pointer; font-weight: bold; }
+  .opt-btn:hover { border-color: var(--primary); background: #E3F2FD; }
+  .opt-btn.correct { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; }
+  .opt-btn.wrong { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .exp-box { display: none; margin-top: 18px; padding: 15px; background: #E8F5E9; border-left: 5px solid #2E7D32; border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.7; }
+  .next-btn { background: var(--secondary); color: white; border: none; padding: 12px 32px; font-size: 18px; border-radius: 25px; cursor: pointer; margin-top: 18px; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <a href="index.html" class="home-btn">🏠 回全科總大廳</a>
+    <h1>📐 小四上數學（翰林版）</h1>
+    <span style="font-size:14px; color:#666;">第1～10單元・動態無限出題</span>
+  </div>
+
+  <div class="scope-box">
+    <div style="font-weight:bold; margin-bottom:10px;">📌 勾選本次考試範圍（自動篩選重點與題庫）：</div>
+    <div class="quick-btns">
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5])">期中考範圍 (第1~5單元)</button>
+      <button class="q-btn" onclick="selectPreset([6,7,8,9,10])">期末考範圍 (第6~10單元)</button>
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6,7,8,9,10])">全選總複習</button>
+    </div>
+    <div class="lessons-grid" id="checkbox-area"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">📖 考前重點公式</button>
+    <button class="tab-btn" onclick="switchTab(2)">✍️ 無限變形刷題＋小老師解析</button>
+  </div>
+
+  <div id="tab1" class="section active"><div id="notes-area"></div></div>
+  <div id="tab2" class="section">
+    <div class="quiz-box">
+      <div class="score-bar">🏆 累計得分：<span id="score">0</span> 分 ｜ 🔥 連續答對：<span id="streak">0</span> 題</div>
+      <div class="q-tag" id="q-lesson-tag">單元標籤</div>
+      <div class="q-text" id="q-text">題目載入中...</div>
+      <div class="opts" id="q-opts"></div>
+      <div class="exp-box" id="q-exp"></div>
+      <button class="next-btn" id="next-btn" onclick="loadQuestion()">下一題 ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const units = [
+  { id:1, name:'第1單元 一億以內的數', notes:['位值順序由右到左：個、十、百、千、萬、十萬、百萬、千萬、億（每4位一撇好讀又好寫）。','讀大數時，中間連續有幾個0，只讀一個「零」；每級末尾的0不讀（如 3050000 讀作三百零五萬）。','比大小先比「位數多寡」，位數一樣再從最左邊最高位開始比。'] },
+  { id:2, name:'第2單元 乘法', notes:['四位數 × 一位數、二位數 × 二位數、三位數 × 二位數：直式計算對齊位值，別忘記進位數字！','末尾有0的乘法（如 320 × 40）：先把非0數字相乘（32 × 4 = 128），再把兩個數末尾所有的0補回去（補2個0 ➔ 12800）。'] },
+  { id:3, name:'第3單元 角度', notes:['量角器使用口訣：「中心對頂點，零線對一邊，看另一邊指哪裡」（注意內圈與外圈刻度別看反！）。','直角 = 90度，平角 = 180度，周角（轉一圈）= 360度。','銳角：小於90度；鈍角：大於90度且小於180度。'] },
+  { id:4, name:'第4單元 假分數與帶分數', notes:['真分數：分子 < 分母（小於1）；假分數：分子 ≥ 分母（大於或等於1）；帶分數：整數 ＋ 真分數。','假分數化帶分數：「分子 ÷ 分母」，商寫在整數位置，餘數當新分子，分母不變。','帶分數化假分數：「分母 × 整數 ＋ 分子」當作新分子，分母不變。'] },
+  { id:5, name:'第5單元 公里', notes:['長度單位換算：1 公里（km）＝ 1000 公尺（m）；1 公尺 ＝ 100 公分（cm）。','公里化公尺「加 3 個 0（乘以 1000）」；公尺化公里「去 3 個 0（除以 1000）」。','計算複名數加減時，公尺滿 1000 就要進位成 1 公里；不夠減時向公里借 1 換成 1000 公尺。'] },
+  { id:6, name:'第6單元 除法', notes:['四位數 ÷ 一位數、二位數 ÷ 二位數、三位數 ÷ 二位數：計算口訣「商 ➔ 乘 ➔ 減 ➔ 比 ➔ 落」。','重要檢查：「餘數一定要比除數小」，如果餘數比除數大，代表商估太小了！','被除數與除數末尾同時有0（如 4800 ÷ 60），可同時劃掉相同個數的0再算（480 ÷ 6 = 80）。'] },
+  { id:7, name:'第7單元 三角形與全等', notes:['按邊長分類：正三角形（三邊等長、三個角都是60度）、等腰三角形（兩腰等長、兩底角相等）。','按角度分類：銳角三角形（三個角都小於90度）、直角三角形（有一個90度直角）、鈍角三角形（有一個大於90度的鈍角）。','全等三角形：形狀和大小完全一樣，疊合後「對應頂點、對應邊、對應角」完全重合。'] },
+  { id:8, name:'第8單元 兩步驟問題與併式', notes:['四則運算黃金規則（先乘除後加減）：有括號 ( ) 裡面的要先算；沒有括號時，先算「乘、除」，再算「加、減」。','只有加減，或只有乘除時，一律「由左往右」依序計算。'] },
+  { id:9, name:'第9單元 二位小數', notes:['1 個 0.1 是十分位，1 個 0.01 是百分位；10 個 0.01 ＝ 0.1，100 個 0.01 ＝ 1。','小數點最右邊末尾的 0 可以省略不寫（例如 2.50 ＝ 2.5，但中間的 0 不能去掉！）。','小數直式加減法：「小數點一定要上下對齊」，缺位可以補 0 再算。'] },
+  { id:10, name:'第10單元 統計圖表', notes:['長條圖：用長條高低比較數量多寡，看圖時先確認「縱軸每一小格代表多少數量」。','折線圖：用線段起伏看出數量隨時間的「增加或減少變化趨勢」（線越陡代表變化越快）。'] }
+];
+
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function generateMathProblem(uid) {
+  let q = '', ans = '', wrongs = [], exp = '';
+  if (uid === 1) {
+    const wan = randInt(120, 850);
+    const ge = randInt(10, 95);
+    const num = wan * 10000 + ge;
+    q = `「${wan} 個萬和 ${ge} 個一」合起來寫成數字是多少？`;
+    ans = num.toLocaleString();
+    wrongs = [(wan*1000 + ge).toLocaleString(), (wan*10000 + ge*100).toLocaleString(), (wan*100000 + ge).toLocaleString()];
+    exp = `${wan} 個萬是 ${wan}0000，再加上 ${ge}，注意千位和百位沒有數字要補 0，合起來就是 ${ans}！`;
+  } else if (uid === 2) {
+    const a = randInt(12, 48) * 10;
+    const b = randInt(2, 9) * 10;
+    const res = a * b;
+    q = `計算算式：${a} × ${b} ＝ ？`;
+    ans = res.toString();
+    wrongs = [(res/10).toString(), (res*10).toString(), (res + 100).toString()];
+    exp = `先把非 0 數字相乘：${a/10} × ${b/10} = ${(a/10)*(b/10)}，再把兩個數末尾共 2 個 0 補回去，答案是 ${ans}！`;
+  } else if (uid === 3) {
+    const a = randInt(25, 75);
+    const res = 180 - a;
+    q = `一個「平角」是 180 度，如果切掉一個 ${a} 度的銳角，剩下的角是幾度？`;
+    ans = `${res} 度`;
+    wrongs = [`${90 - a > 0 ? 90 - a : a + 20} 度`, `${360 - a} 度`, `${res - 10} 度`];
+    exp = `平角等於 180 度，180 － ${a} ＝ ${res} 度（這是一個大於 90 度的鈍角喔！）。`;
+  } else if (uid === 4) {
+    const den = randInt(3, 9);
+    const whole = randInt(2, 5);
+    const rem = randInt(1, den - 1);
+    const num = whole * den + rem;
+    q = `把假分數「${den} 分之 ${num}」（${num}/${den}）換成帶分數是多少？`;
+    ans = `${whole} 又 ${rem}/${den}`;
+    wrongs = [`${whole + 1} 又 ${rem}/${den}`, `${rem} 又 ${whole}/${den}`, `${whole} 又 ${den - rem}/${den}`];
+    exp = `用分子除以分母：${num} ÷ ${den} ＝ ${whole} ⋯ 餘 ${rem}。商 ${whole} 當整數，餘數 ${rem} 當新分子，所以是 ${ans}！`;
+  } else if (uid === 5) {
+    const km = randInt(2, 8);
+    const m = randInt(50, 850);
+    const total = km * 1000 + m;
+    q = `爸爸假日去路跑，跑了 ${km} 公里 ${m} 公尺，請問一共是多少公尺？`;
+    ans = `${total} 公尺`;
+    wrongs = [`${km * 100 + m} 公尺`, `${km * 10000 + m} 公尺`, `${km + m} 公尺`];
+    exp = `因為 1 公里 ＝ 1000 公尺，所以 ${km} 公里 ＝ ${km*1000} 公尺。${km*1000} ＋ ${m} ＝ ${total} 公尺！`;
+  } else if (uid === 6) {
+    const div = randInt(12, 25);
+    const quo = randInt(11, 24);
+    const rem = randInt(1, div - 1);
+    const dividend = div * quo + rem;
+    q = `計算除法：${dividend} ÷ ${div} 的商和餘數是多少？`;
+    ans = `商 ${quo}，餘 ${rem}`;
+    wrongs = [`商 ${quo - 1}，餘 ${rem + div}`, `商 ${quo + 1}，餘 ${rem}`, `商 ${quo}，餘 0`];
+    exp = `${div} × ${quo} ＝ ${div*quo}，${dividend} － ${div*quo} ＝ ${rem}（餘數 ${rem} 比除數 ${div} 小，計算正確！）。`;
+  } else if (uid === 7) {
+    const topAngle = randInt(30, 110);
+    const baseAngle = (180 - topAngle) / 2;
+    if (!Number.isInteger(baseAngle)) return generateMathProblem(7);
+    q = `一個「等腰三角形」的頂角是 ${topAngle} 度，請問它的其中一個底角是幾度？`;
+    ans = `${baseAngle} 度`;
+    wrongs = [`${180 - topAngle} 度`, `${topAngle} 度`, `${baseAngle + 10} 度`];
+    exp = `三角形三個內角加起來是 180 度，且等腰三角形兩個底角一樣大！(180 － ${topAngle}) ÷ 2 ＝ ${baseAngle} 度。`;
+  } else if (uid === 8) {
+    const money = randInt(200, 500);
+    const price = randInt(15, 35);
+    const count = randInt(3, 6);
+    const left = money - price * count;
+    q = `妹妹帶了 ${money} 元去買文具，買了 ${count} 枝每枝 ${price} 元的原子筆，還剩下多少元？`;
+    ans = `${left} 元`;
+    wrongs = [`${(money - price) * count} 元`, `${money - price - count} 元`, `${left + 10} 元`];
+    exp = `列出併式：${money} － ${price} × ${count}。記得「先乘除後加減」，先算 ${price} × ${count} ＝ ${price*count}，再用 ${money} － ${price*count} ＝ ${left} 元！`;
+  } else if (uid === 9) {
+    const a = (randInt(15, 45) / 10).toFixed(2);
+    const b = (randInt(125, 385) / 100).toFixed(2);
+    const sum = (parseFloat(a) + parseFloat(b)).toFixed(2);
+    q = `計算小數加法：${a} ＋ ${b} ＝ ？`;
+    ans = sum;
+    wrongs = [(parseFloat(sum) + 0.1).toFixed(2), (parseFloat(sum) - 0.09).toFixed(2), (parseFloat(a) + parseFloat(b)/10).toFixed(2)];
+    exp = `小數加法口訣「小數點對齊」！${a} 就是 ${parseFloat(a).toFixed(2)}，百分位對齊百分位相加，答案是 ${sum}。`;
+  } else {
+    const mon = randInt(20, 45);
+    const tue = randInt(50, 85);
+    const diff = tue - mon;
+    q = `觀察圖書館借書統計折線圖：星期一借出 ${mon} 本，星期二借出 ${tue} 本，請問星期二比星期一多了幾本？`;
+    ans = `${diff} 本`;
+    wrongs = [`${mon + tue} 本`, `${diff + 5} 本`, `${diff - 5} 本`];
+    exp = `比較兩天相差多少數量，用大數減小數：${tue} － ${mon} ＝ ${diff} 本（折線往上爬代表數量增加喔！）。`;
+  }
+  return { uid, q, ans, wrongs, exp };
+}
+
+let score = 0, streak = 0, currQ = null, answered = false;
+
+function init() {
+  const area = document.getElementById('checkbox-area');
+  units.forEach(u => {
+    area.innerHTML += `<label class="lesson-chk"><input type="checkbox" class="l-chk" value="${u.id}" checked onchange="updateView()"> ${u.name}</label>`;
+  });
+  updateView();
+}
+
+function selectPreset(ids) {
+  document.querySelectorAll('.l-chk').forEach(c => c.checked = ids.includes(parseInt(c.value)));
+  updateView();
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.l-chk:checked')).map(c => parseInt(c.value));
+}
+
+function updateView() {
+  const ids = getSelectedIds();
+  const nArea = document.getElementById('notes-area');
+  nArea.innerHTML = '';
+  if (ids.length === 0) {
+    nArea.innerHTML = '<p style="text-align:center;color:#888;">請至少勾選一個單元！</p>';
+    return;
+  }
+  units.filter(u => ids.includes(u.id)).forEach(u => {
+    nArea.innerHTML += `<div class="note-card"><div class="note-title">📌 ${u.name}</div>
+      <ul class="note-list">${u.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>`;
+  });
+  if (document.getElementById('tab2').classList.contains('active')) loadQuestion();
+}
+
+function switchTab(num) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i+1===num));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i+1===num));
+  if (num === 2) loadQuestion();
+}
+
+function loadQuestion() {
+  const ids = getSelectedIds();
+  if (ids.length === 0) {
+    document.getElementById('q-text').innerText = '請先在上方勾選至少一個單元範圍！';
+    document.getElementById('q-opts').innerHTML = '';
+    return;
+  }
+  answered = false;
+  document.getElementById('q-exp').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  const pickUid = ids[Math.floor(Math.random() * ids.length)];
+  currQ = generateMathProblem(pickUid);
+  const uObj = units.find(u => u.id === pickUid);
+  document.getElementById('q-lesson-tag').innerText = uObj.name;
+  document.getElementById('q-text').innerText = currQ.q;
+
+  const allOpts = [currQ.ans, ...currQ.wrongs].sort(() => Math.random() - 0.5);
+  const oDiv = document.getElementById('q-opts');
+  oDiv.innerHTML = '';
+  allOpts.forEach((opt, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerText = `${['A','B','C','D'][pos]}. ${opt}`;
+    btn.onclick = () => checkAns(btn, opt);
+    oDiv.appendChild(btn);
+  });
+}
+
+function checkAns(btn, sel) {
+  if (answered) return;
+  answered = true;
+  if (sel === currQ.ans) {
+    btn.classList.add('correct'); score += 10; streak++;
+  } else {
+    btn.classList.add('wrong'); streak = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (b.innerText.endsWith(currQ.ans)) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').innerText = score;
+  document.getElementById('streak').innerText = streak;
+  const exp = document.getElementById('q-exp');
+  exp.innerHTML = `<b>💡 小老師一步步解析：</b>${currQ.exp}`;
+  exp.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+init();
+</script>
+</body>
+</html>

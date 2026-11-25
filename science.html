@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小四上自然科學（康軒版）- 段考衝刺網</title>
+<style>
+  :root { --primary: #00897B; --secondary: #26A69A; --bg: #E0F2F1; --text: #333; }
+  body { font-family: -apple-system, 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+  .container { max-width: 900px; margin: 0 auto; background: white; padding: 22px; border-radius: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 12px; margin-bottom: 18px; }
+  .home-btn { background: #546E7A; color: white; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+  h1 { color: var(--primary); margin: 0; font-size: 24px; }
+  .scope-box { background: #F1F8E9; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #AED581; }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .q-btn { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: 16px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  .q-btn:hover { background: var(--primary); color: white; }
+  .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+  .lesson-chk { display: flex; align-items: center; gap: 6px; background: white; padding: 8px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 1px solid #C5E1A5; font-weight: 500; }
+  .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .tab-btn { padding: 12px 24px; font-size: 16px; border: none; border-radius: 12px; background: #e0e0e0; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .note-card { border: 2px solid #B2DFDB; border-radius: 14px; padding: 18px; margin-bottom: 16px; background: #FAFAFA; }
+  .unit-badge { display: inline-block; background: var(--primary); color: white; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-right: 8px; }
+  .note-title { font-size: 18px; font-weight: bold; color: #004D40; margin-bottom: 10px; }
+  .note-list { margin: 0; padding-left: 20px; line-height: 1.75; font-size: 15px; }
+  .exp-highlight { background: #E0F7FA; border-left: 4px solid #00ACC1; padding: 10px 14px; margin-top: 10px; border-radius: 6px; font-size: 14px; color: #006064; }
+  .quiz-box { background: #FFFDE7; border: 3px solid #FBC02D; border-radius: 16px; padding: 25px 20px; max-width: 680px; margin: 0 auto; text-align: center; }
+  .score-bar { font-size: 18px; font-weight: bold; color: #F57F17; margin-bottom: 15px; }
+  .q-tag { display: inline-block; background: #E0F2F1; color: #00695C; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+  .q-text { font-size: 20px; font-weight: bold; margin: 15px 0 20px; line-height: 1.5; text-align: left; }
+  .opts { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .opt-btn { padding: 14px 18px; font-size: 17px; text-align: left; border: 2px solid #ccc; background: white; border-radius: 12px; cursor: pointer; }
+  .opt-btn:hover { border-color: var(--primary); background: #E0F2F1; }
+  .opt-btn.correct { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; font-weight: bold; }
+  .opt-btn.wrong { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .exp-box { display: none; margin-top: 18px; padding: 15px; background: #E3F2FD; border-left: 5px solid #1976D2; border-radius: 8px; text-align: left; font-size: 15px; line-height: 1.6; }
+  .next-btn { background: var(--primary); color: white; border: none; padding: 12px 30px; font-size: 17px; border-radius: 25px; cursor: pointer; margin-top: 18px; font-weight: bold; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <a href="index.html" class="home-btn">🏠 回全科總大廳</a>
+    <h1>🔬 小四上自然科學（康軒版）</h1>
+    <span style="font-size:14px; color:#555;">115學年度・全4單元</span>
+  </div>
+
+  <div class="scope-box">
+    <div style="font-weight:bold; margin-bottom:8px;">📌 勾選本次段考範圍（一鍵切換期中／期末）：</div>
+    <div class="quick-btns">
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6])">🌟 期中考範圍 (第1～2單元)</button>
+      <button class="q-btn" onclick="selectPreset([7,8,9,10,11])">🎯 期末考範圍 (第3～4單元)</button>
+      <button class="q-btn" onclick="selectPreset([1,2,3,4,5,6,7,8,9,10,11])">📚 全選總複習</button>
+    </div>
+    <div class="lessons-grid" id="checkbox-area"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">📖 考前重點＆實驗速覽</button>
+    <button class="tab-btn" onclick="switchTab(2)">✍️ 範圍無限測驗＋解析</button>
+  </div>
+
+  <div id="tab1" class="section active"><div id="notes-area"></div></div>
+  <div id="tab2" class="section">
+    <div class="quiz-box">
+      <div class="score-bar">🏆 累計得分：<span id="score">0</span> 分 ｜ 🔥 連續答對：<span id="streak">0</span> 題</div>
+      <div class="q-tag" id="q-lesson-tag">單元標籤</div>
+      <div class="q-text" id="q-text">題目載入中...</div>
+      <div class="opts" id="q-opts"></div>
+      <div class="exp-box" id="q-exp"></div>
+      <button class="next-btn" id="next-btn" onclick="loadQuestion()">下一題 ➡️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const lessons = [
+  { id:1, u:'第一單元：地表的靜與動', name:'1-1 地表物質有什麼',
+    notes:['地表常見物質包含土壤、沙子、鵝卵石、岩石與礦物，岩石是由一種或多種「礦物」組成的（例如花岡岩由石英、長石、黑雲母組成）。','土壤中有沙粒、黏土、腐植質（動植物遺體腐爛形成，能提供植物養分）、空氣和水分。','礦物硬度比較：用指甲、銅幣、鐵釘互相刻畫，能留下刮痕的代表「比較軟」，不會留刮痕的「比較硬」（石英 > 鐵釘 > 銅幣 > 指甲）。'],
+    exp:'🧪 實驗重點：把土壤倒進裝水的透明杯攪拌靜置，最底層是較重的「小石子與沙粒」，中層是「黏土」，最上層浮在水面的是「腐植質」。' },
+  { id:2, u:'第一單元：地表的靜與動', name:'1-2 地表環境會變動嗎',
+    notes:['流水的作用：河川上游水流急（侵蝕作用強，多大型有稜角的岩石）；中游水流減緩（搬運作用，石頭磨成圓滑的鵝卵石）；下游水流最慢（堆積作用強，形成沙灘與三角洲）。','風與海浪的作用：風吹沙丘、海浪侵蝕形成海蝕洞或豆腐岩（如野柳女王頭）。','人類活動也會改變地表：過度開發山坡地或超抽地下水，容易造成土石流與地層下陷。'],
+    exp:'🧪 實驗重點：土堆灑水實驗中，坡度越陡、水量越大，水流沖刷下來的泥沙越多（侵蝕與搬運作用越強）。' },
+  { id:3, u:'第一單元：地表的靜與動', name:'1-3 怎樣做好地震防災',
+    notes:['臺灣位於板塊交界處，地震頻繁；地震發生時保命三步驟：「趴下（Drop）、掩護（Cover）、穩住（Hold on）」。','在室內遇到地震：躲在堅固桌子下保護頭頸部，遠離窗戶、吊燈與高大書櫃，千萬不要搭乘電梯。','平時應準備「緊急避難包」（放飲用水、乾糧、手電筒、哨子、急救藥品、保暖衣物），並與家人約定避難集合地點。'],
+    exp:'💡 易錯觀念：地震搖晃時不要急著往外衝（容易被掉落物砸傷），等搖晃停止後再關閉電源瓦斯並走樓梯疏散。' },
+  { id:4, u:'第二單元：水生生物與環境', name:'2-1 生物生存的環境都相同嗎',
+    notes:['水域環境分為「淡水環境」（溪流、池塘、湖泊、水田）和「鹹水／半淡鹹水環境」（海洋、潮間帶、河口溼地）。','不同水域的環境條件不同：溪流水流急且溶氧量高；池塘水流平緩；海洋鹽分高且有潮汐與水壓變化。','陸生生物與水生生物構造不同，水生生物通常具有適應水中呼吸、游泳或漂浮的特殊構造。'],
+    exp:'🧪 觀察重點：調查校園水池或水域環境時，應保持安靜、不隨意捕捉或丟棄垃圾，並注意水邊安全。' },
+  { id:5, u:'第二單元：水生生物與環境', name:'2-2 水生生物如何適應環境',
+    notes:['魚類的適應構造：流線型身體減少水阻；用「鰓」呼吸（鰓蓋會一開一合）；用「鰭」控制方向、平衡與前進（尾鰭推動前進）。','水生植物四大類：1.沉水性（水蘊草，全株沉在水中，葉片柔韌隨水流擺動）；2.浮葉性（睡蓮，根在泥土、葉片平貼水面）；3.挺水性（荷花、香蒲，根在泥土、莖葉挺出水面）；4.漂浮性（布袋蓮、浮萍，根漂在水中不入土，葉柄膨大有氣室可漂浮）。','其他水生動物：青蛙用肺與皮膚呼吸、後腳有蹼；水黽腳上有細毛可利用水的表面張力在水面滑行；招潮蟹雄蟹有一隻大螯。'],
+    exp:'🧪 實驗重點：切開布袋蓮的膨大葉柄，會看到許多海綿狀的「氣室」，裡面充滿空氣，這就是它能漂浮在水面的秘密！' },
+  { id:6, u:'第二單元：水生生物與環境', name:'2-3 如何愛護環境',
+    notes:['水域汙染來源：家庭廢水、工廠排放未處理廢水、農業農藥與肥料流入河川，會導致水中溶氧下降、魚蝦死亡。','外來種危害：隨意放生或棄養外來水生動物（如福壽螺、美國螯蝦、琵琶鼠魚），會吃掉本土生物、破壞生態平衡。','愛護水域做法：使用環保清潔劑、做好垃圾分類不亂丟、不隨意放生外來種、參與淨灘或護溪活動。'],
+    exp:'💡 易錯觀念：「放生」外來寵物魚或烏龜不但不是愛護動物，反而會害死本土生物，絕對不可以隨意放生！' },
+  { id:7, u:'第三單元：有趣的聲光現象', name:'3-1 聲音如何產生和傳播',
+    notes:['聲音是由物體「振動」產生的（例如說話時聲帶振動、敲鼓時鼓面振動），停止振動聲音就會停止。','聲音傳播需要「介質」（固體、液體、氣體都可以傳播聲音），在「真空」中（如外太空）沒有介質，聲音無法傳播。','聲音三要素：1.響度（大小聲，用力敲振幅大就大聲）；2.音調（高低音，物體越短、越細、越緊，振動越快，音調越高）；3.音色（不同樂器或人的聲音特色）。'],
+    exp:'🧪 實驗重點：敲擊音叉後立刻放進水裡，會看到水花四濺，證明發聲中的物體正在快速振動。' },
+  { id:8, u:'第三單元：有趣的聲光現象', name:'3-2 光有什麼特性',
+    notes:['光的直線傳播：光在均勻介質中沿「直線」前進，遇到不透明物體會在後方形成「影子」（例如皮影戲、日晷）。','光的反射：光遇到光滑表面（如鏡子、平靜水面）會改變方向彈回來，入射角等於反射角。','光的折射與色散：光從空氣斜射入水中時，行進方向會偏折（使水中的筷子看起來像折斷、水池看起來變淺）；陽光通過三稜鏡或水滴會色散成紅、橙、黃、綠、藍、靛、紫七色光（彩虹）。'],
+    exp:'🧪 實驗重點：把錢幣放在碗底退後到剛好看不見，往碗裡加水後錢幣又「浮現」出來，這是因為光線在水面發生了「折射」！' },
+  { id:9, u:'第三單元：有趣的聲光現象', name:'3-3 如何應用聲與光',
+    notes:['聲音的應用：超音波檢查胎兒、聲納探測魚群與海底深度、救護車警笛提醒禮讓、隔音牆吸收噪音。','光的應用：汽車後視鏡（凸面鏡擴大視野）、潛望鏡（利用兩片平面鏡反射原理）、光纖網路高速傳輸資料、太陽能板發電。','保護視力與聽力：不在光線太暗或搖晃車廂看書、用眼30分鐘休息10分鐘；不長時間戴耳機聽高音量音樂。'],
+    exp:'💡 易錯觀念：潛望鏡內部裝的是「兩片互相平行的平面鏡」，利用光的「反射」原理讓我們能從低處看到高處。' },
+  { id:10, u:'第四單元：好玩的電路', name:'4-1 如何讓燈泡發亮',
+    notes:['形成「通路」的三個必備零件：電池（提供電力）、電線（輸送電力）、燈泡（消耗電力發光）。','燈泡發亮的接法：電線必須一端接電池正極(+)、另一端接電池負極(-)，且分別連接燈泡的「螺紋金屬」與「底部接點」，形成完整封閉的「通路」才會亮。','通路、斷路與短路：通路（燈泡亮）；斷路（電線沒接好或開關打開，燈泡不亮）；短路（電線直接把電池正負極連在一起沒經過燈泡，電線會發燙且電池很快沒電，非常危險！）。','導體與不良導體（絕緣體）：容易讓電流通過的叫「導體」（如銅線、鐵釘、迴紋針、一元硬幣、石墨筆芯）；不容易通過的叫「不良導體」（如橡皮擦、塑膠尺、木棒、玻璃）。'],
+    exp:'🧪 實驗重點：鉛筆芯（石墨）雖然不是金屬，但它是「導體」，接在電路中可以讓燈泡發亮喔！' },
+  { id:11, u:'第四單元：好玩的電路', name:'4-2 電路有哪些連接方式',
+    notes:['電池串聯：一顆電池的正極接另一顆的負極（像排隊），電力變強，燈泡會「變更亮」，但電池耗電也較快。','電池並聯：兩顆電池的正極接正極、負極接負極，燈泡亮度「不變」（跟一顆電池差不多），但電力可以維持「比較久」。','燈泡串聯：兩個燈泡接在同一條電線上，燈泡會「變暗」；如果其中一顆燈泡壞掉或拔掉，整個電路變成斷路，另一顆也「不會亮」。','燈泡並聯：兩個燈泡各自有獨立電線連回電池，燈泡亮度「不變」（跟一顆一樣亮）；其中一顆壞掉，另一顆「依然會亮」（家裡電器都是並聯）。'],
+    exp:'💡 考前必背口訣：「電池串聯變更亮，電池並聯用更久；燈泡串聯一起滅，燈泡並聯各自亮！」' }
+];
+
+const qBank = [
+  { lid:1, q:'小美拿指甲、銅幣和鐵釘互相刻畫三種礦物，結果發現「石英」無法被鐵釘刻出刮痕，請問這代表什麼？', opts:['石英的硬度比鐵釘大','鐵釘的硬度比石英大','石英與鐵釘硬度完全相同','石英是液態礦物'], ans:0, exp:'硬度較大的物體可以在硬度較小的物體上留下刮痕；鐵釘刮不動石英，代表石英比鐵釘更硬。' },
+  { lid:2, q:'河川從上游到下游的景色不同，為什麼河川下游的河床上大多是細小的沙子，而上游卻是巨大有稜角的石頭？', opts:['水流速度越往下游越慢，細沙容易在下游堆積，石頭在搬運途中被磨圓','上游溫度比較低所以石頭容易結冰變大','下游人類把大石頭全部搬走了','上游沒有流水侵蝕作用'], ans:0, exp:'上游坡陡水流急，侵蝕與搬運力強，能留下大石頭；越往下游水流越平緩，石頭邊滾邊磨變小變圓，最後細沙在下游堆積。' },
+  { lid:3, q:'上課時突然發生強烈地震，教室劇烈搖晃，下列哪一種應變行為最正確？', opts:['立刻就地趴下、躲在堅固課桌下掩護頭頸部並穩住桌腳','立刻衝出教室搶搭電梯下樓到操場','站在窗戶旁邊往下看發生什麼事','把書包頂在頭上直接從二樓跳下去'], ans:0, exp:'地震搖晃時應立即執行「趴下、掩護、穩住」，遠離窗戶與吊燈，絕對不可搭乘電梯。' },
+  { lid:4, q:'下列哪一種水域環境同時受到「河水（淡水）」與「海水（鹹水）」交會影響，水生生物必須能適應鹽度變化？', opts:['河口溼地（如高美溼地）','高山冷泉溪流','校園生態水池','山區水庫'], ans:0, exp:'河口溼地與紅樹林位於河川入海口，屬於半淡鹹水環境，生物需要適應潮汐與鹽分的劇烈變化。' },
+  { lid:5, q:'布袋蓮和浮萍能夠直接漂浮在水面上生活，根部不需要固定在泥土裡，主要原因為何？', opts:['葉柄膨大內部有充滿空氣的氣室，且身體輕巧','它們的根部會不斷往下噴水產生推力','池塘的水比海水還要重很多','它們的葉片表面塗滿了防水蠟油'], ans:0, exp:'漂浮性水生植物（如布袋蓮）在膨大的葉柄中有海綿狀氣室儲存空氣，增加浮力讓植物漂浮在水面。' },
+  { lid:6, q:'媽媽買了一隻國外進口的「巴西龜」當寵物，後來不想養了，下列哪一種處理方式最正確？', opts:['詢問動物園、收容中心或送給有能力飼養的人，絕不隨意放生','帶到住家附近的生態池放生讓牠回歸大自然','直接丟進社區大排水溝裡','帶到深山溪流裡面放走'], ans:0, exp:'外來種在臺灣沒有天敵，隨意放生會大量繁殖並吃掉本土物種，嚴重破壞生態平衡。' },
+  { lid:7, q:'宇航員在沒有空氣的「外太空」進行太空漫步時，即使兩人面對面大聲喊叫也聽不到對方的聲音，原因為何？', opts:['外太空是真空環境，沒有傳播聲音的介質','外太空溫度太低把聲帶凍住了','太空衣把耳朵完全封死導致耳聾','聲音在太空中傳播速度太快超過人耳極限'], ans:0, exp:'聲音的傳播必須依靠介質（固體、液體或氣體），外太空為真空狀態，沒有介質所以聲音無法傳播。' },
+  { lid:8, q:'把一支直直的筷子斜插進裝水的透明玻璃杯中，從側面看會覺得筷子在水面處好像「折斷」了，這是因為光的哪一種現象？', opts:['光的折射','光的直線傳播','光的色散','光的完全吸收'], ans:0, exp:'光線從水裡傳出來進入空氣時，行進方向會發生偏折，這就是「光的折射」，會造成水中的物體看起來位置偏移或折斷。' },
+  { lid:9, q:'潛水艇在水面下航行時，船員能透過「潛望鏡」看到海面上的船隻，請問潛望鏡內部利用了什麼原理？', opts:['兩片互相平行的平面鏡，利用光的反射原理','兩片凸透鏡，利用光的折射原理','三稜鏡，利用光的色散原理','超音波回聲定位原理'], ans:0, exp:'潛望鏡上下各裝一片呈45度角的平行平面鏡，讓海面光線經過兩次「反射」進入人眼。' },
+  { lid:10, q:'小華用電池、電線和小燈泡連接電路，如果不小心用電線把電池的正極和負極直接連在一起（沒經過燈泡），會發生什麼事？', opts:['形成「短路」，電線會迅速發燙且電池很快沒電，非常危險','形成「通路」，燈泡會發出比平常亮十倍的光','形成「斷路」，電池電力會被永久保存起來','電池會自動充電恢復滿格電量'], ans:0, exp:'電流不經過燈泡直接從正極流回負極稱為「短路」，瞬間電流極大，會使電線發燙甚至引發危險。' },
+  { lid:11, q:'家裡客廳的電燈和廚房的電燈同時開著，當廚房的電燈突然燒壞不亮時，客廳的電燈依然亮著，請問家裡的電燈是哪一種連接方式？', opts:['燈泡並聯','燈泡串聯','電池串聯','電路短路'], ans:0, exp:'「燈泡並聯」時，每個燈泡都有各自獨立的通路連回電源，因此其中一顆壞掉，其他燈泡完全不受影響依然會亮。' }
+];
+
+let score = 0, streak = 0, currQ = null, answered = false;
+
+function init() {
+  const area = document.getElementById('checkbox-area');
+  lessons.forEach(l => {
+    area.innerHTML += `<label class="lesson-chk"><input type="checkbox" class="l-chk" value="${l.id}" checked onchange="updateView()"> ${l.name}</label>`;
+  });
+  updateView();
+}
+
+function selectPreset(ids) {
+  document.querySelectorAll('.l-chk').forEach(c => c.checked = ids.includes(parseInt(c.value)));
+  updateView();
+}
+
+function getSelectedIds() {
+  return Array.from(document.querySelectorAll('.l-chk:checked')).map(c => parseInt(c.value));
+}
+
+function updateView() {
+  const ids = getSelectedIds();
+  const nArea = document.getElementById('notes-area');
+  nArea.innerHTML = '';
+  if (ids.length === 0) {
+    nArea.innerHTML = '<p style="text-align:center;color:#888;">請至少勾選一個小節！</p>';
+    return;
+  }
+  lessons.filter(l => ids.includes(l.id)).forEach(l => {
+    nArea.innerHTML += `<div class="note-card">
+      <div class="note-title"><span class="unit-badge">${l.u}</span>${l.name}</div>
+      <ul class="note-list">${l.notes.map(n => `<li>${n}</li>`).join('')}</ul>
+      <div class="exp-highlight">${l.exp}</div>
+    </div>`;
+  });
+  if (document.getElementById('tab2').classList.contains('active')) loadQuestion();
+}
+
+function switchTab(num) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i+1===num));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i+1===num));
+  if (num === 2) loadQuestion();
+}
+
+function loadQuestion() {
+  const ids = getSelectedIds();
+  const pool = qBank.filter(q => ids.includes(q.lid));
+  if (pool.length === 0) {
+    document.getElementById('q-text').innerText = '請先在上方勾選至少一個小節範圍！';
+    document.getElementById('q-opts').innerHTML = '';
+    return;
+  }
+  answered = false;
+  document.getElementById('q-exp').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  let next;
+  do { next = pool[Math.floor(Math.random() * pool.length)]; } while (pool.length > 1 && currQ && next.q === currQ.q);
+  currQ = next;
+  const lessonObj = lessons.find(l => l.id === currQ.lid);
+  document.getElementById('q-lesson-tag').innerText = `${lessonObj.u}｜${lessonObj.name}`;
+  document.getElementById('q-text').innerText = currQ.q;
+
+  const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+  const oDiv = document.getElementById('q-opts');
+  oDiv.innerHTML = '';
+  indices.forEach((idx, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerText = `${['A','B','C','D'][pos]}. ${currQ.opts[idx]}`;
+    btn.onclick = () => checkAns(btn, idx);
+    oDiv.appendChild(btn);
+  });
+}
+
+function checkAns(btn, idx) {
+  if (answered) return;
+  answered = true;
+  if (idx === currQ.ans) {
+    btn.classList.add('correct'); score += 10; streak++;
+  } else {
+    btn.classList.add('wrong'); streak = 0;
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (b.innerText.includes(currQ.opts[currQ.ans])) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').innerText = score;
+  document.getElementById('streak').innerText = streak;
+  const exp = document.getElementById('q-exp');
+  exp.innerHTML = `<b>💡 小老師解析：</b>${currQ.exp}`;
+  exp.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+init();
+</script>
+</body>
+</html>
